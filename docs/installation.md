@@ -5,7 +5,7 @@ The Cegid-CBR Connector installation consists of multiple steps that are require
 The connector requires a SMA OpCon Windows Agent to provide the connection between Notification Manager in the OpCon System and the ServiceNow Connector software. 
 
 ## Supported Software Levels
-The following software levels are required to implement this version (21.x.x) of the ServiceNow Connector.
+The following software levels are required to implement this version (21.x.x) of the Cegid-CBR Connector.
 
 - OpCon Release 19.0 or higher.
 - Embedded Java OpenJDK 8 (part of installation).
@@ -20,25 +20,25 @@ The installation process consists of the following steps:
 - Cegid-CBR/Y2 Connector Configuration.
  
 ### OpCon Windows Agent Installation
-The ServiceNow Connector requires the installation of a Windows Agent on the same system as the ServiceNow Connector.
+The ServiceNow Connector requires the installation of a Windows Agent on the same system as the Cegid-CBR Connector.
 Either use an existing Windows Agent or complete the installation of the Windows Agent.
 
 ### Cegid-CBR/Y2 Connector Installation
-The ServiceNow connector must be installed on the Windows Server that supports the Cegid-CBR/Y2 application. Ensure that the server has an installed OpCon Windows Agent.
+The SCegid-CBR connector must be installed on the Windows Server that supports the Cegid-CBR/Y2 application. Ensure that the server has an installed OpCon Windows Agent.
 
-Copy the downloaded install file CegidCBRConnector-win.zip and extract it into a temp directory (c:\temp). Extract the information including sub-directories into the required directory.
+Copy the downloaded install file CegidCBRConnector-win.zip and extract it into a temp directory (c:\\temp). Extract the information including sub-directories into the required directory.
 
 After the extraction, the root installation directory contains the connector executable (CBRConnector.exe), the encryption software executable (Encrypt.exe), the Connector.config file and three directories, emplugins, java and log. The emplugins directory contains the Cegid-CBR Job Subtype, java directory contains the java software required to execute the connector (OpenJDK 8) and the log directory contains the connector log files.
 
 ### Job Subtype Installation
-Copy the Enterprise Manager plug-in from the \<***installation***\>\\emplugins directory to the dropins directory of the Enterprise Manager installation. 
+Copy the Enterprise Manager plug-in from the ***installation_dir***\\emplugins directory to the dropins directory of the Enterprise Manager installation. 
 If the dropins directory does not exist, create the dropins directory off the root directory. 
 
-Restart Enterprise Manager and a new Windows job subtype called Cegid ORLI will be visible.
+Restart Enterprise Manager and a new Windows job subtype called Cegid CBR/Y2 will be visible.
 
 If not restart Enterprise Manager using 'Run as Administrator'. After this Enterprise Manager can be used normally.
 
-Create a global property **OrliPath** that contains the full path of the installation directory.
+Create a global property **CBRY2Path** that contains the full path of the installation directory.
 
 #### Create CBRY2Path Global Property
 Create a global property **CBRY2Path** that contains the full path of the installation directory.
@@ -67,12 +67,12 @@ The Connector.config contains the following values
 Property Name | Value
 --------- | -----------
 **[GENERAL SETTINGS]**     | header
-**FolderDone**             | This is the root folder for all generated completion files (\<***file***\>.DONE, \<***file***\>.TXT & output.xml). The connector appends the environment and jobid arguments to create the working directory for this execution (\<***FolderDone value***\>\\\<***environment argument***\>\\\<***jobid argument***\>). NOTE : The backslash character (\\) is a special Java character and if used should be entered twice (\\\\) (i.e. c:\\\\utilities\\\\output\\\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
+**FolderDone**             | This is the root folder for all generated completion files (***file***.DONE, ***file***.TXT & output.xml). The connector appends the environment and jobid arguments to create the working directory for this execution (***FolderDone value***\\***environment argument***\\***jobid argument***). NOTE : The backslash character (\\) is a special Java character and if used should be entered twice (\\\\) (i.e. c:\\\\utilities\\\\output\\\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
 **FolderLog**	           |
-**FolderInpXml**           | This is the root folder for the generated inputfile.xml and auth.txt files. The connector appends the environment and jobid arguments to create the working directory for this execution (\<***FolderInpXml value***\>\\\<***environment argument***\>\\\<***jobid argument***\>). NOTE : The backslash character (\) is a special Java character and if used should be entered twice (\\) (i.e. c:\\utilities\\output\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
-**FolderAlternateTxt**     | In some previous versions of the CBR/Y2 application, the \<***file***\>.TXT is not written to the \<***FolderDone value***\>\\\<***environment***\>\\\<***jobid***\> folder, but a specific CBR/Y2 folder. If this is the case, then the specific folder must be defined here. NOTE : The backslash character (\) is a special Java character and if used should be entered twice (\\) (i.e. c:\\utilities\\output\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
-**CbpExport**              | The full path name to the CBPEXPORT executable. NOTE : The backslash character (\) is a special Java character and if used should be entered twice (\\) (i.e. c:\\utilities\\output\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
-**CgiMode**                | The full path name to the CGIMODE executable. NOTE : The backslash character (\) is a special Java character and if used should be entered twice (\\) (i.e. c:\\utilities\\output\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
+**FolderInpXml**           | This is the root folder for the generated inputfile.xml and auth.txt files. The connector appends the environment and jobid arguments to create the working directory for this execution (***FolderInpXml value***\\***environment argument***\\***jobid argument***). NOTE : The backslash character (\) is a special Java character and if used should be entered twice (\\\\) (i.e. c:\\\\utilities\\\\output\\\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
+**FolderAlternateTxt**     | In some previous versions of the CBR/Y2 application, the ***file***.TXT is not written to the ***FolderDone value***\\***environment***\\***jobid*** folder, but a specific CBR/Y2 folder. If this is the case, then the specific folder must be defined here. NOTE : The backslash character (\\) is a special Java character and if used should be entered twice (\\\\) (i.e. c:\\\\utilities\\\\output\\\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
+**CbpExport**              | The full path name to the CBPEXPORT executable. NOTE : The backslash character (\\) is a special Java character and if used should be entered twice (\\\\) (i.e. c:\\\\utilities\\\\output\\\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
+**CgiMode**                | The full path name to the CGIMODE executable. NOTE : The backslash character (\\) is a special Java character and if used should be entered twice (\\\\) (i.e. c:\\\\utilities\\\\output\\\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
 **PrefixLog**              | Logging must be enabled in the CBR/Y2 application and a prefix must be defined. Default value is **OPCON-**.
 **ExportOK**               | The return codes that indicate if the CBPEXPORT program completed successfully. Default value is **0,24**.
 **CgiModeOK**              | The return code to indicate that the CGIMODE program executed successfully. This is not the actual completion code as the real completion code is contained in the files generated by the CGIMODE program. Default value = **0**;
@@ -84,7 +84,7 @@ Property Name | Value
 **Debug**                  | Turns tracing on in the CBRConnector to assist with fault diagnosis. Default value **OFF**.
 **SmaStatus**              | Turns on sending status messages to OpCon as the CBRConnector executes providing information on the progress of the execution. Default value **False**.
 **ConsoleDisplay**         | Turns on sending CONSOLE:DISPLAY events to OpCon as the CBRConnector executes providing information on the progress of the execution. Default value **False**.
-**[User Defined RC]**      | header - Contains a list of values defining error strings and their matching integer values. These values are used if the completion code in the \<***file***\>.DONE is 51. The \<***file**\>.TXT is then scanned for a matching string. If a match is found the integer value is returned to OpCon as the completion code. These values are defined as integer=description pairs.
+**[User Defined RC]**      | header - Contains a list of values defining error strings and their matching integer values. These values are used if the completion code in the ***file***.DONE is 51. The ***file***.TXT is then scanned for a matching string. If a match is found the integer value is returned to OpCon as the completion code. These values are defined as integer=description pairs.
 
 Example configuration file. 
 
