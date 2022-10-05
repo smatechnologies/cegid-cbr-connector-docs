@@ -3,6 +3,7 @@
 The Enterprise Manager includes job subtype definitions for the Cegid CBR/Y2 Application. The job subtype can be accessed by selecting the Cegid CBR/Y2 job subtype from the drop down list when the Windows Job Type has been selected. 
 
 ## Cegid CBR/Y2 Job definitions
+
 The Cegid CBR/Y2 Definition, defines the database name, the job id and the failure criteria that are used to start a CBR/Y2 job.
 
 When defining a Cegid CBR/Y2 job, select a Job Type of Windows and then a Job Sub-Type of Cegid CBR/Y2. 

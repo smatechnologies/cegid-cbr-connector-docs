@@ -64,6 +64,7 @@ Encrypt.exe -v abcdefg
 Configure the Connector.config file in the installation directory setting the required information.
 The Connector.config contains the following values
 
+
 Property Name | Value
 --------- | -----------
 **[GENERAL SETTINGS]**     | header
