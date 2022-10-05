@@ -24,7 +24,7 @@ The ServiceNow Connector requires the installation of a Windows Agent on the sam
 Either use an existing Windows Agent or complete the installation of the Windows Agent.
 
 ### Cegid-CBR/Y2 Connector Installation
-The SCegid-CBR connector must be installed on the Windows Server that supports the Cegid-CBR/Y2 application. Ensure that the server has an installed OpCon Windows Agent.
+The Cegid-CBR connector must be installed on the Windows Server that supports the Cegid-CBR/Y2 application. Ensure that the server has an installed OpCon Windows Agent.
 
 Copy the downloaded install file CegidCBRConnector-win.zip and extract it into a temp directory (c:\\temp). Extract the information including sub-directories into the required directory.
 
