@@ -12,7 +12,7 @@ When the job is scheduled by OpCon, the definitions are passed as arguments (-e 
 
 The Cegid CBR Connector starts up and reads the configuration information from the Agent.config file and performs the following tasks.
 
-![Cegid-CBR Component Overview](/img/cegid-cbr-component-overview.png)
+![Cegid-CBR Component Overview](../static/img/cegid-cbr-component-overview.png)
 
 - The CBRConnector takes a timestamp for later comparison purposes.
 - The CBRConnector creates the required directories if they do not exist using the root definitions configured in the Agent.config file and the databasename and jobid arguments (i.e. \<***root directory***\\***databasename***\\***jobid***\>).
