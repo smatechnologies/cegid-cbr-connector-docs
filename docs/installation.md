@@ -1,96 +1,123 @@
-# Installation
+---
+title: Cegid CBR Connector Installation
+sidebar_label: Installation
+description: "Install and configure the Cegid CBR Connector so OpCon can schedule and monitor Cegid CBR/Y2 jobs on Windows."
+tags:
+  - Procedural
+  - System Administrator
+  - Agents
+  - Installation
+---
 
-The Cegid-CBR Connector installation consists of multiple steps that are required to complete the installation successfully. 
+# Cegid CBR Connector Installation
 
-The connector requires a SMA OpCon Windows Agent to provide the connection between Notification Manager in the OpCon System and the ServiceNow Connector software. 
+## What Is It?
+
+The Cegid CBR Connector installation places the connector software and its required components on a Windows server that runs the Cegid CBR/Y2 application. After installation, OpCon can schedule and monitor Cegid CBR/Y2 jobs through the connector.
+
+- Use this procedure when installing the Cegid CBR Connector for the first time on a Windows server.
+- Use this when upgrading to a new connector release that changes the configuration file format or installer structure.
 
 ## Supported Software Levels
-The following software levels are required to implement this version (21.x.x) of the Cegid-CBR Connector.
 
-- OpCon Release 19.0 or higher.
-- Embedded Java OpenJDK 8 (part of installation).
-- Cegid-CBR / Y2 version xxx.
+The following software levels are required to implement version 21.x.x of the Cegid CBR Connector:
 
-## Installation
-The installation process consists of the following steps:
+| Requirement | Version |
+|---|---|
+| OpCon | Release 19.0 or higher |
+| Java | Embedded OpenJDK (included in installer) |
+| Cegid CBR/Y2 | Contact your Cegid representative for the required version |
 
-- OpCon Windows Agent Installation.
-- Cegid-CBR/Y2 Connector Installation.
-- Adding Cegid-CBR Connector job subtype to Enterprise Manager.
-- Cegid-CBR/Y2 Connector Configuration.
- 
-### OpCon Windows Agent Installation
-The ServiceNow Connector requires the installation of a Windows Agent on the same system as the Cegid-CBR Connector.
-Either use an existing Windows Agent or complete the installation of the Windows Agent.
+## How To Install
 
-### Cegid-CBR/Y2 Connector Installation
-The Cegid-CBR connector must be installed on the Windows Server that supports the Cegid-CBR/Y2 application. Ensure that the server has an installed OpCon Windows Agent.
+The installation consists of the following steps:
 
-Copy the downloaded install file CegidCBRConnector-win.zip and extract it into a temp directory (c:\\temp). Extract the information including sub-directories into the required directory.
+1. Install the OpCon Windows Agent.
+2. Install the Cegid CBR/Y2 Connector.
+3. Add the Cegid CBR Connector job subtype to Enterprise Manager.
+4. Configure the Cegid CBR/Y2 Connector.
 
-After the extraction, the root installation directory contains the connector executable (CBRConnector.exe), the encryption software executable (Encrypt.exe), the Connector.config file and three directories, emplugins, java and log. The emplugins directory contains the Cegid-CBR Job Subtype, java directory contains the java software required to execute the connector (OpenJDK 8) and the log directory contains the connector log files.
+### Step 1 — Install the OpCon Windows Agent
 
-### Job Subtype Installation
-Copy the Enterprise Manager plug-in from the ***installation_dir***\\emplugins directory to the dropins directory of the Enterprise Manager installation. 
-If the dropins directory does not exist, create the dropins directory off the root directory. 
+The Cegid CBR Connector requires a Windows Agent installed on the same server as the Cegid CBR/Y2 application. Use an existing Windows Agent if one is already installed, or complete a new Windows Agent installation before proceeding.
 
-Restart Enterprise Manager and a new Windows job subtype called Cegid CBR/Y2 will be visible.
+### Step 2 — Install the Cegid CBR/Y2 Connector
 
-If not restart Enterprise Manager using 'Run as Administrator'. After this Enterprise Manager can be used normally.
+To install the connector, complete the following steps:
 
-Create a global property **CBRY2Path** that contains the full path of the installation directory.
+1. Copy the downloaded install file `CegidCBRConnector-win.zip` to a temporary directory (for example, `c:\temp`).
+2. Extract the contents, including subdirectories, into the desired installation directory.
 
-#### Create CBRY2Path Global Property
-Create a global property **CBRY2Path** that contains the full path of the installation directory.
+After extraction, the root installation directory contains:
 
-### Cegid-CBR/Y2 Connector Configuration
-The configuration of the Cegid CBR/Y2 Connector requires setting the required values in the Connector.config file. The Connector.config file contains information for the Cegid CBR/Y2 Connector that enables the connector to communicate successfully with the CBPEXPORT & CGIMODE programs. 
+| Item | Description |
+|---|---|
+| `CBRConnector.exe` | The connector executable |
+| `Encrypt.exe` | The encryption utility |
+| `Connector.config` | The connector configuration file |
+| `emplugins\` | Contains the Cegid CBR job subtype plug-in for Enterprise Manager |
+| `java\` | Contains the embedded OpenJDK runtime |
+| `log\` | Contains connector log files |
 
-All user and password values placed in the configuration and template files must be encrypted using the Encrypt.exe utility provided with the connector. 
+### Step 3 — Add the Job Subtype to Enterprise Manager
+
+To add the Cegid CBR/Y2 job subtype to Enterprise Manager, complete the following steps:
+
+1. Copy the Enterprise Manager plug-in from `<installation_dir>\emplugins\` to the `dropins` directory in your Enterprise Manager installation.
+   - If the `dropins` directory does not exist, create it in the Enterprise Manager root directory.
+2. Restart Enterprise Manager.
+   - If the job subtype does not appear, restart Enterprise Manager using **Run as Administrator**.
+3. Verify that the **Cegid CBR/Y2** job subtype is visible when you select a Windows job type.
+
+### Step 4 — Create the CBRY2Path Global Property
+
+To configure the global property required by all Cegid CBR/Y2 job definitions, complete the following steps:
+
+1. In OpCon, create a global property named **CBRY2Path**.
+2. Set the value to the full path of the connector installation directory.
+   - If more than one Cegid CBR Connector is installed on the same server, create an additional global property with a distinct name and update the **Connector Path** field in each affected job definition.
+
+### Step 5 — Configure the Connector
+
+The `Connector.config` file in the installation directory controls connector behavior. Before editing, encrypt any user and password values using `Encrypt.exe`.
 
 #### Encrypt Utility
-The Encrypt utility uses standard 64 bit encryption.
 
-Supports a -v argument and displays the encrypted value
-
-On Windows, example on how to encrypt the value "abcdefg":
+The `Encrypt.exe` utility uses 64-bit encryption. To encrypt a value, run the following command:
 
 ```
-Encrypt.exe -v abcdefg
-
+Encrypt.exe -v <value>
 ```
 
-#### Connector.config configuration
-Configure the Connector.config file in the installation directory setting the required information.
-The Connector.config contains the following values
+The encrypted output is displayed and ready to paste into the configuration file.
 
+#### Connector.config Settings
 
-Property Name | Value
---------- | -----------
-**[GENERAL SETTINGS]**     | header
-**FolderDone**             | This is the root folder for all generated completion files (***file***.DONE, ***file***.TXT & output.xml). The connector appends the environment and jobid arguments to create the working directory for this execution (***FolderDone value***\\***environment argument***\\***jobid argument***). NOTE : The backslash character (\\) is a special Java character and if used should be entered twice (\\\\) (i.e. c:\\\\utilities\\\\output\\\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
-**FolderLog**	           |
-**FolderInpXml**           | This is the root folder for the generated inputfile.xml and auth.txt files. The connector appends the environment and jobid arguments to create the working directory for this execution (***FolderInpXml value***\\***environment argument***\\***jobid argument***). NOTE : The backslash character (\) is a special Java character and if used should be entered twice (\\\\) (i.e. c:\\\\utilities\\\\output\\\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
-**FolderAlternateTxt**     | In some previous versions of the CBR/Y2 application, the ***file***.TXT is not written to the ***FolderDone value***\\***environment***\\***jobid*** folder, but a specific CBR/Y2 folder. If this is the case, then the specific folder must be defined here. NOTE : The backslash character (\\) is a special Java character and if used should be entered twice (\\\\) (i.e. c:\\\\utilities\\\\output\\\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
-**CbpExport**              | The full path name to the CBPEXPORT executable. NOTE : The backslash character (\\) is a special Java character and if used should be entered twice (\\\\) (i.e. c:\\\\utilities\\\\output\\\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
-**CgiMode**                | The full path name to the CGIMODE executable. NOTE : The backslash character (\\) is a special Java character and if used should be entered twice (\\\\) (i.e. c:\\\\utilities\\\\output\\\\). Alternatively the slash (/) character can be used instead (i.e. c:/utilities/output/).
-**PrefixLog**              | Logging must be enabled in the CBR/Y2 application and a prefix must be defined. Default value is **OPCON-**.
-**ExportOK**               | The return codes that indicate if the CBPEXPORT program completed successfully. Default value is **0,24**.
-**CgiModeOK**              | The return code to indicate that the CGIMODE program executed successfully. This is not the actual completion code as the real completion code is contained in the files generated by the CGIMODE program. Default value = **0**;
-**ExportAddOpt**           |	
-**OpConUserid**            | The OpCon user that is used to submit events to OpCon if the ConsoleDisplay configuration value is set to True. The OpCon user name must be encrypted using the Encrypt.exe utility. 
-**OpConUserPassword**      | The event password of the OpCon user that is used to submit events to OpCon if the ConsoleDisplay configuration value is set to True. The password must be encrypted using the Encrypt.exe utility.
-**PollDelayValue**         | The time in seconds between checks to see if the CBPEXPORT or CGIMODE programs have completed execution. Default value is **5** seconds.
-**PollInitialValue**       | The time in seconds before the first check is made to see if the CBPEXPORT or CGIMODE programs have completed execution. Default value is **10** seconds.
-**Debug**                  | Turns tracing on in the CBRConnector to assist with fault diagnosis. Default value **OFF**.
-**SmaStatus**              | Turns on sending status messages to OpCon as the CBRConnector executes providing information on the progress of the execution. Default value **False**.
-**ConsoleDisplay**         | Turns on sending CONSOLE:DISPLAY events to OpCon as the CBRConnector executes providing information on the progress of the execution. Default value **False**.
-**[User Defined RC]**      | header - Contains a list of values defining error strings and their matching integer values. These values are used if the completion code in the ***file***.DONE is 51. The ***file***.TXT is then scanned for a matching string. If a match is found the integer value is returned to OpCon as the completion code. These values are defined as integer=description pairs.
+| Property | Description | Default |
+|---|---|---|
+| **[GENERAL SETTINGS]** | — | — |
+| `FolderDone` | Root folder for generated completion files (`.DONE`, `.TXT`, `output.xml`). The connector appends `<environment>\<jobid>` to create the working subdirectory. Use forward slashes or double backslashes in the path. | — |
+| `FolderLog` | Log file folder. | — |
+| `FolderInpXml` | Root folder for the generated `inputfile.xml` and `auth.txt`. The connector appends `<environment>\<jobid>` to create the working subdirectory. | — |
+| `FolderAlternateTxt` | Alternate folder for the `.TXT` file, used when older CBR/Y2 versions write the file to a different location. | — |
+| `CbpExport` | Full path to the CBPEXPORT executable. | — |
+| `CgiMode` | Full path to the CGIMODE executable. | — |
+| `PrefixLog` | Log file prefix required by the CBR/Y2 application. | `OPCON-` |
+| `ExportOK` | Comma-separated return codes that indicate CBPEXPORT completed successfully. | `0,24` |
+| `CgiModeOK` | Return code indicating CGIMODE completed successfully (not the job completion code). | `0` |
+| `ExportAddOpt` | Additional options passed to CBPEXPORT. | — |
+| `OpConUserid` | Encrypted OpCon user name, used to submit events when `ConsoleDisplay=True`. | — |
+| `OpConUserPassword` | Encrypted OpCon event password, used to submit events when `ConsoleDisplay=True`. | — |
+| `PollDelayValue` | Seconds between checks for CBPEXPORT or CGIMODE completion. | `5` |
+| `PollInitialValue` | Seconds before the first completion check. | `10` |
+| `Debug` | Enables trace logging to assist with fault diagnosis. | `OFF` |
+| `SmaStatus` | Sends progress messages to OpCon Operations views during execution. | `False` |
+| `ConsoleDisplay` | Sends `CONSOLE:DISPLAY` events to OpCon during execution. | `False` |
+| **[User Defined RC]** | Maps error description strings to integer completion codes. Used when the `.DONE` file returns completion code 51. Format: `<integer>=<description>`. | — |
 
-Example configuration file. 
+#### Example Configuration File
 
 ```
-
 [General Settings]
 FolderDone=c:\\test\\cbr\\CEGID
 FolderLog=
@@ -102,8 +129,8 @@ PrefixLog=OPCON-
 ExportOK=0,24
 CgiModeOK=0
 ExportAddOpt=
-OpConUserid= 6233426a6232343d
-OpConUserPassword= 6233426a623235776432513d
+OpConUserid=6233426a6232343d
+OpConUserPassword=6233426a623235776432513d
 PollDelayValue=10
 PollIntervalValue=5
 Debug=OFF
@@ -112,7 +139,40 @@ ConsoleDisplay=True
 [User Defined RC]
 -10=erreur fatale * plantage du processus
 -11=erreur fatale * interruption forcée du processus
--20=enregistrements comportant des erreurs 
--30=Exercice inexistant sur la 
-
+-20=enregistrements comportant des erreurs
+-30=Exercice inexistant sur la
 ```
+
+## FAQs
+
+**Do I need to install Java separately?**
+
+No. The installer bundles an embedded OpenJDK runtime in the `java\` directory. You do not need a separately installed Java version on the server.
+
+**Where should the connector be installed?**
+
+Install the connector on the same Windows server where the Cegid CBR/Y2 application runs. The Windows Agent must also be installed on that server.
+
+**How do I handle path characters in the configuration file?**
+
+Java treats the backslash (`\`) as an escape character. Either double the backslashes (for example, `c:\\test\\cbr`) or use forward slashes (for example, `c:/test/cbr`).
+
+**What happens if the Cegid CBR/Y2 job subtype does not appear in Enterprise Manager after restarting?**
+
+Restart Enterprise Manager using **Run as Administrator**. After that, you can use Enterprise Manager normally without administrator privileges.
+
+**Can I install multiple Cegid CBR Connectors on the same server?**
+
+Yes. Create a separate global property for each installation directory and configure the **Connector Path** field in each job definition to reference the correct property.
+
+## Glossary
+
+**Connector.config** — The configuration file that stores all connector settings, including folder paths, executable locations, and runtime options. Replaces the older `Agent.config` file name.
+
+**CBRY2Path** — A global OpCon property that stores the full installation directory path. Referenced in the **Connector Path** field of every Cegid CBR/Y2 job definition.
+
+**dropins** — An Enterprise Manager directory that contains plug-in files. Placing the job subtype plug-in here registers it with Enterprise Manager on the next restart.
+
+**Encrypt.exe** — The encryption utility bundled with the connector. Encrypts values using 64-bit encryption for use in the `Connector.config` file.
+
+**Global property** — An OpCon variable that stores a value accessible across all job definitions. Used here to store the connector installation path.
