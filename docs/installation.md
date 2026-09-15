@@ -53,7 +53,7 @@ After extraction, the root installation directory contains:
 | Item | Description |
 |---|---|
 | `CBRConnector.exe` | The connector executable |
-| `Encrypt.exe` | The encryption utility |
+| `Encrypt.exe` | The credential encoding utility |
 | `Connector.config` | The connector configuration file |
 | `emplugins\` | Contains the Cegid CBR job subtype plug-in for Enterprise Manager |
 | `java\` | Contains the embedded OpenJDK runtime |
@@ -79,23 +79,29 @@ To configure the global property required by all Cegid CBR/Y2 job definitions, c
 
 ### Step 5 — Configure the Connector
 
-The `Connector.config` file in the installation directory controls connector behavior. Before editing, encrypt any user and password values using `Encrypt.exe`.
+The `Connector.config` file in the installation directory controls connector behavior. Before editing, encode any user and password values using `Encrypt.exe`.
 
 #### Encrypt Utility
 
-The `Encrypt.exe` utility uses 64-bit encryption. To encrypt a value, run the following command:
+The `Encrypt.exe` utility encodes a value so that it is not stored in plain text. To encode a value, run the following command:
 
 ```
 Encrypt.exe -v <value>
 ```
 
-The encrypted output is displayed and ready to paste into the configuration file.
+The encoded output is displayed and ready to paste into the configuration file.
+
+:::caution
+
+Encoding obscures a credential; it does not protect it. A value produced by `Encrypt.exe` can be reversed by anyone who can read it, so treat `Connector.config` as a file that contains live credentials. Restrict access to it using file system permissions, and replace credential values with placeholders before sharing the file in a ticket, a screenshot or a repository.
+
+:::
 
 #### Connector.config Settings
 
 | Property | Description | Default |
 |---|---|---|
-| **[GENERAL SETTINGS]** | — | — |
+| **[General Settings]** | Section header | — |
 | `FolderDone` | Root folder for generated completion files (`.DONE`, `.TXT`, `output.xml`). The connector appends `<environment>\<jobid>` to create the working subdirectory. Use forward slashes or double backslashes in the path. | — |
 | `FolderLog` | Log file folder. | — |
 | `FolderInpXml` | Root folder for the generated `inputfile.xml` and `auth.txt`. The connector appends `<environment>\<jobid>` to create the working subdirectory. | — |
@@ -106,10 +112,10 @@ The encrypted output is displayed and ready to paste into the configuration file
 | `ExportOK` | Comma-separated return codes that indicate CBPEXPORT completed successfully. | `0,24` |
 | `CgiModeOK` | Return code indicating CGIMODE completed successfully (not the job completion code). | `0` |
 | `ExportAddOpt` | Additional options passed to CBPEXPORT. | — |
-| `OpConUserid` | Encrypted OpCon user name, used to submit events when `ConsoleDisplay=True`. | — |
-| `OpConUserPassword` | Encrypted OpCon event password, used to submit events when `ConsoleDisplay=True`. | — |
-| `PollDelayValue` | Seconds between checks for CBPEXPORT or CGIMODE completion. | `5` |
-| `PollInitialValue` | Seconds before the first completion check. | `10` |
+| `OpConUserid` | Encoded OpCon user name, used to submit events when `ConsoleDisplay=True`. | — |
+| `OpConUserPassword` | Encoded OpCon event password, used to submit events when `ConsoleDisplay=True`. | — |
+| `PollDelayValue` | Seconds to wait before the first check for CBPEXPORT or CGIMODE completion. | `10` |
+| `PollIntervalValue` | Seconds between checks for CBPEXPORT or CGIMODE completion. | `5` |
 | `Debug` | Enables trace logging to assist with fault diagnosis. | `OFF` |
 | `SmaStatus` | Sends progress messages to OpCon Operations views during execution. | `False` |
 | `ConsoleDisplay` | Sends `CONSOLE:DISPLAY` events to OpCon during execution. | `False` |
@@ -129,8 +135,8 @@ PrefixLog=OPCON-
 ExportOK=0,24
 CgiModeOK=0
 ExportAddOpt=
-OpConUserid=6233426a6232343d
-OpConUserPassword=6233426a623235776432513d
+OpConUserid=<encoded OpCon user name>
+OpConUserPassword=<encoded OpCon password>
 PollDelayValue=10
 PollIntervalValue=5
 Debug=OFF
@@ -173,6 +179,6 @@ Yes. Create a separate global property for each installation directory and confi
 
 **dropins** — An Enterprise Manager directory that contains plug-in files. Placing the job subtype plug-in here registers it with Enterprise Manager on the next restart.
 
-**Encrypt.exe** — The encryption utility bundled with the connector. Encrypts values using 64-bit encryption for use in the `Connector.config` file.
+**Encrypt.exe** — The credential encoding utility bundled with the connector. Encodes values so they are not stored in plain text in the `Connector.config` file. Encoding obscures a credential; it does not protect it.
 
 **Global property** — An OpCon variable that stores a value accessible across all job definitions. Used here to store the connector installation path.
