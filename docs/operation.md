@@ -50,25 +50,31 @@ To configure failure criteria for a standard installation, set the **Failure Cri
 
 The following completion codes are returned by the Cegid CBR Connector to OpCon:
 
-| Code | Text Value | Description |
-|---|---|---|
-| `0` | `JOB_FINISHED_OK` | The job completed successfully. |
-| `1` | `JOB_FAILED` | The job failed. |
-| `100` | — | CBPEXPORT returned a failure condition. |
-| `101` | — | The CBPEXPORT or CGIMODE job was cancelled. |
-| `102` | — | The `inputfile.xml` was not found by the CGIMODE job. |
-| `103` | — | The `inputfile.xml` does not contain an ACTION value. |
-| `104` | — | The `auth.txt` file was not found. |
-| `105` | — | The defined completion description was not found in the `.TXT` file. |
+| Code | Description |
+|---|---|
+| `0` | The job completed successfully. |
+| `51` | CGIMODE returned `51` and no matching string was found in the `.TXT` file. See the **User Defined RC** section of `Connector.config`. |
+| `102` | The job failed. |
+| `103` | CBPEXPORT returned a failure condition. |
+| `104` | The CBPEXPORT or CGIMODE job was cancelled. |
+| `105` | The `inputfile.xml` was not found by the CGIMODE job. |
+| `106` | The `inputfile.xml` does not contain an ACTION value. |
+| `107` | The `auth.txt` file was not found. |
+| `109` | The `.DONE` file was not found. |
+
+A negative or other integer code indicates a value mapped in the **User Defined RC** section of `Connector.config`, returned when the `.DONE` file contains completion code `51` and a description string in the `.TXT` file matches an entry in that section.
 
 ## Logging
 
-The connector writes log output to a cycle of five log files in the `<installation_dir>\log\` directory:
-
-- **Log.log** — current log file
-- **Log.log.1** through **Log.log.5** — previous log files (oldest is overwritten)
+The connector writes log output to `cegidcbr.log` in the `<installation_dir>\log\` directory. When a log file reaches 100 MB it rolls, and the rolled file is written to a month-named subdirectory with a date-stamped name — for example `log\2026-09\cegidcbr_2026-09-15.0.log`.
 
 Log files contain execution messages, return codes, and error details for each connector run.
+
+:::caution
+
+Rolled log files are retained indefinitely unless you configure pruning. Include the `log` directory in whatever disk monitoring you apply to the connector host.
+
+:::
 
 ## Job Output
 
@@ -96,13 +102,13 @@ The OpCon job log for a Cegid CBR/Y2 job includes the following information:
 
 ## FAQs
 
-**What does completion code 100 mean?**
+**What does completion code 103 mean?**
 
-Code `100` means the CBPEXPORT program returned a failure condition. Check the `ExportOK` setting in `Connector.config` to confirm which return codes are considered successful for your CBPEXPORT version. The default values are `0` and `24`.
+Code `103` means the CBPEXPORT program returned a failure condition. Check the `ExportOK` setting in `Connector.config` to confirm which return codes are considered successful for your CBPEXPORT version. The default values are `0` and `24`.
 
-**What does completion code 105 mean?**
+**What does completion code 51 mean?**
 
-Code `105` means the CGIMODE program returned code `51` and the `.TXT` file did not contain a matching string from the **User Defined RC** section of `Connector.config`. Verify that all expected error description strings are defined in that section.
+Code `51` means the CGIMODE program returned code `51` and the `.TXT` file did not contain a matching string from the **User Defined RC** section of `Connector.config`. The connector passes the original code through unchanged. Verify that all expected error description strings are defined in that section.
 
 **Where do I find the raw CBPEXPORT and CGIMODE output?**
 

@@ -8,15 +8,17 @@ tags:
   - Agents
 ---
 
+# Cegid CBR Connector Overview
+
 ## What Is It?
 
-The Cegid CBR Connector is a Windows batch program that OpCon uses to schedule and monitor Cegid CBR/Y2 jobs. OpCon submits jobs using the Cegid CBR/Y2 job subtype defined in Enterprise Manager, passing the database name and job ID as arguments to the connector.
+The Cegid CBR Connector is a Java program that OpCon uses to schedule and monitor Cegid CBR/Y2 jobs. OpCon submits jobs using the Cegid CBR/Y2 job subtype defined in Enterprise Manager, passing the database name and job ID as arguments to the connector.
 
 - Use this when you need OpCon to automate Cegid CBR/Y2 business process jobs in a Windows environment.
 - Use this when you want OpCon job logs to include the full output of CBPEXPORT and CGIMODE execution, including status messages and completion codes.
 - Use this when you need centralized monitoring of Cegid CBR/Y2 processing results alongside other OpCon-managed workloads.
 
-The current connector implementation consists of a Windows batch program executed by the Windows Agent. Job definitions are entered as Windows jobs using the Cegid CBR/Y2 job subtype. The job definitions consist of the environment and the job ID.
+The current connector implementation is a Java program run by the Windows Agent, with an embedded OpenJDK runtime supplied by the installer. Job definitions are entered as Windows jobs using the Cegid CBR/Y2 job subtype. The job definitions consist of the environment and the job ID.
 
 When OpCon schedules a job, the definitions are passed as arguments (`-e databasename -j jobid`) to the Cegid CBR Connector.
 
@@ -56,7 +58,7 @@ Results appear in the OpCon job log, which includes output from CBPEXPORT, CGIMO
 
 ## Glossary
 
-**CBRConnector** — The Windows batch program that acts as the integration layer between OpCon and the Cegid CBR/Y2 application.
+**CBRConnector** — The Java program that acts as the integration layer between OpCon and the Cegid CBR/Y2 application. Run by the Windows Agent, using the embedded OpenJDK runtime supplied by the installer.
 
 **CBPEXPORT** — A Cegid CBR/Y2 program that exports job definitions to `inputfile.xml` and `auth.txt`.
 
