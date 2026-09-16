@@ -15,15 +15,43 @@ tags:
 
 The Cegid CBR Connector enables OpCon to schedule and monitor Cegid CBR/Y2 business process jobs on Windows.
 
-## Overview
+<div style={{display: 'flex', gap: '0.75rem', alignItems: 'flex-start', flexWrap: 'wrap', marginTop: '1rem'}}>
 
-- [Overview](./overview.md) — what the connector does and how it processes a job
-- [Release Notes](./release-notes.md) — version history and migration notes
+<div style={{flex: '1', minWidth: '160px', display: 'flex', flexDirection: 'column', gap: '0.6rem'}}>
 
-## Installation
+<div style={{background: 'var(--ifm-card-background-color)', border: '1px solid var(--ifm-color-emphasis-400)', borderRadius: '10px', padding: '0.75rem 1rem'}}>
 
-- [Installation](./installation.md) — install the connector, register the job subtype, and configure `Connector.config`
+### Overview
 
-## Operation
+- [Overview](./overview.md)
+- [Release Notes](./release-notes.md)
 
-- [Operation](./operation.md) — job definition fields, completion codes, and log output
+</div>
+
+</div>
+
+<div style={{flex: '1', minWidth: '160px', display: 'flex', flexDirection: 'column', gap: '0.6rem'}}>
+
+<div style={{background: 'var(--ifm-card-background-color)', border: '1px solid var(--ifm-color-emphasis-400)', borderRadius: '10px', padding: '0.75rem 1rem'}}>
+
+### Installation
+
+- [Installation](./installation.md)
+
+</div>
+
+</div>
+
+<div style={{flex: '1', minWidth: '160px', display: 'flex', flexDirection: 'column', gap: '0.6rem'}}>
+
+<div style={{background: 'var(--ifm-card-background-color)', border: '1px solid var(--ifm-color-emphasis-400)', borderRadius: '10px', padding: '0.75rem 1rem'}}>
+
+### Operation
+
+- [Operation](./operation.md)
+
+</div>
+
+</div>
+
+</div>
